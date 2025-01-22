@@ -20,7 +20,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'cancel_node = nav2_goal_cancel.cancel_node:main'
+            'bool_node = nav2_goal_cancel.bool_node:main',
+            'string_node = nav2_goal_cancel.string_node:main',
         ],
     },
 )
