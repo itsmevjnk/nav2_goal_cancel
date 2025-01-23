@@ -29,6 +29,11 @@ class GoalCancelNode(Node):
 
         self.get_logger().info('ready to receive messages')
 
+    def goal_cb(self, data: PoseStamped):
+        self.get_logger().info(f'saving goal pose: position ({data.pose.position.x}, {data.pose.position.y}), orientation ({data.pose.orientation.z}, {data.pose.orientation.w})')
+        self.last_known_goal = data
+        self.last_state = True # moving
+    
     def set_state(self, state):
         if state != self.last_state:
             self.last_state = state
