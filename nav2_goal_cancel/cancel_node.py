@@ -37,7 +37,7 @@ class GoalCancelNode(Node):
     def set_state(self, state):
         if state != self.last_state:
             self.last_state = state
-            if state: self.cancel_goal()
+            if not state: self.cancel_goal()
             else: self.renavigate_goal()
 
     def cancel_goal(self):
@@ -46,7 +46,7 @@ class GoalCancelNode(Node):
         request = CancelGoal.Request() # should be all zeros
         self.cancel_srv.call_async(request) # we don't care about the result anyway
     
-    def renavigate_goal(self, data):
+    def renavigate_goal(self):
         if self.last_known_goal is None:
             self.get_logger().error('no goal pose received by node, not resuming')
             return
