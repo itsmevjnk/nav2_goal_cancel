@@ -23,6 +23,7 @@ class GoalCancelNode(Node):
             durability=qos.QoSDurabilityPolicy.VOLATILE
         ) # same as bt_navigator
         self.goal_sub = self.create_subscription(PoseStamped, 'goal_pose', self.goal_cb, qos_profile)
+        self.goal_sub_alt = self.create_subscription(PoseStamped, 'goal_pose_alt', self.goal_cb, qos_profile)
         self.goal_pub = self.create_publisher(PoseStamped, 'goal_pose', qos_profile)
 
         self.last_known_goal: PoseStamped | None = None
