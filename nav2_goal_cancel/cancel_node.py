@@ -32,7 +32,9 @@ class GoalCancelNode(Node):
             x = self.declare_parameter('init_x', 0.0).get_parameter_value().double_value
             y = self.declare_parameter('init_y', 0.0).get_parameter_value().double_value
             yaw = self.declare_parameter('init_yaw', 0.0).get_parameter_value().double_value
+            frame = self.declare_parameter('init_frame', 'map').get_parameter_value().string_value
             self.last_known_goal = PoseStamped()
+            self.last_known_goal.header.frame_id = frame
             self.last_known_goal.pose.position.x = x
             self.last_known_goal.pose.position.y = y
             self.last_known_goal.pose.orientation.x, self.last_known_goal.pose.orientation.y, self.last_known_goal.pose.orientation.z, self.last_known_goal.pose.orientation.w = Rotation.from_euler('z', yaw).as_quat()
