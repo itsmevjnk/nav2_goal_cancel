@@ -4,7 +4,7 @@ from rclpy.node import Node
 from action_msgs.srv import CancelGoal
 from geometry_msgs.msg import PoseStamped
 
-ACTION_CANCEL_SERVICE = '/navigate_to_pose/_action/cancel_goal'
+from scipy.spatial.transform import Rotation
 
 class GoalCancelNode(Node):
     def __init__(self, prefix):
@@ -26,6 +26,17 @@ class GoalCancelNode(Node):
         self.goal_pub = self.create_publisher(PoseStamped, 'goal_pose', qos_profile)
 
         self.last_known_goal: PoseStamped | None = None
+
+        init_goal = self.declare_parameter('init_goal', False).get_parameter_value().bool_value
+        if init_goal:
+            x = self.declare_parameter('init_x', 0.0).get_parameter_value().double_value
+            y = self.declare_parameter('init_y', 0.0).get_parameter_value().double_value
+            yaw = self.declare_parameter('init_yaw', 0.0).get_parameter_value().double_value
+            self.last_known_goal = PoseStamped()
+            self.last_known_goal.pose.position.x = x
+            self.last_known_goal.pose.position.y = y
+            self.last_known_goal.pose.orientation.x, self.last_known_goal.pose.orientation.y, self.last_known_goal.pose.orientation.z, self.last_known_goal.pose.orientation.w = Rotation.from_euler('z', yaw).as_quat()
+            self.get_logger().info(f'initial goal set to (({x},{y}),{yaw})')
 
         self.get_logger().info('ready to receive messages')
 
